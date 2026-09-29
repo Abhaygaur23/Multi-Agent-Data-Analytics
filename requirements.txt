@@ -1,0 +1,11 @@
+bitsandbytes
+accelerate
+dotenv
+pandas
+torch
+matplotlib
+seaborn
+pydantic
+transformers
+scipy
+gradio
