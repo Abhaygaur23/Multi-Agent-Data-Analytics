@@ -16,8 +16,7 @@
 7. [Configuration](#configuration)
 8. [Screenshots](#screenshots)
 9. [Contributing](#contributing)
-10. [License](#license)
-11. [Acknowledgements](#acknowledgements)
+10. [Acknowledgements](#acknowledgements)
 
 ---
 
@@ -56,8 +55,8 @@ Follow these steps to set up the project locally:
 ### Steps
 1. **Clone the Repository**:
    ```bash
-   git clone 
-   cd Multi_Agent_System_for_Data_Analysis
+   git clone https://github.com/Abhaygaur23/Multi-Agent-Data-Analytics.git
+   cd Multi-Agent-Data-Analytics
    ```
 
 2. **Install Dependencies**:
@@ -128,7 +127,6 @@ Multi-Agent_System_for_Data_Analysis/
 ├── app.py                  # Gradio interface and main entry point
 ├── requirements.txt        # List of Python dependencies
 ├── README.md               # Project documentation (this file)
-├── LICENSE                 # MIT License
 ├── Multi-Agent_System_for_Data_Analysis.ipynb  # Full Jupyter Notebook implementation
 └── images&videos/          # Demo images and video
     ├── Multi_Agent_System_Overview.png  
@@ -219,12 +217,6 @@ Contributions are welcome! To contribute:
 5. Open a Pull Request.
 
 Please ensure your code follows the existing style and includes appropriate documentation.
-
----
-
-## License
-
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
 ---
 
