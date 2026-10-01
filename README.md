@@ -50,7 +50,7 @@ Follow these steps to set up the project locally:
 ### Prerequisites
 - Python 3.8 or higher
 - Git
-- A Hugging Face account with an API token (for model access)
+- A Hugging Face account with an API token (optional, for LLM-driven orchestration)
 
 ### Steps
 1. **Clone the Repository**:
@@ -60,39 +60,52 @@ Follow these steps to set up the project locally:
    ```
 
 2. **Install Dependencies**:
-   Install the required Python packages using the provided `requirements.txt`:
+   Install the required Python packages using `requirements.txt`:
    ```bash
    pip install -r requirements.txt
    ```
 
-3. **Configure Hugging Face Token**:
-   - Open `src/config.py`.
-   - Replace the `HF_TOKEN` value with your Hugging Face API token:
-     ```python
-     HF_TOKEN = "your_hugging_face_token_here"
+3. **Configure Environment Variables (Optional)**:
+   - Copy `.env.example` to `.env`:
+     ```bash
+     cp .env.example .env
      ```
-
-4. **(Optional) Jupyter Notebook**:
-   If you prefer to explore the full implementation interactively, open `Multi-Agent_System_for_Data_Analysis.ipynb` in Jupyter Notebook or JupyterLab:
-   ```bash
-   jupyter notebook Multi-Agent_System_for_Data_Analysis.ipynb
-   ```
-
-5. **Run the Application**:
-   See [Running the Application](#running-the-application) below.
+   - Set your `HF_TOKEN` in `.env` (or via Streamlit secrets when deploying).
+   - *Note: If no token is provided, the app automatically runs in fast, offline semantic parsing mode.*
 
 ---
 
 ## Usage
 
-### Running the Application
-Launch the Gradio interface to interact with the system:
+### 🚀 Running the Streamlit Application (Recommended)
+Launch the interactive Streamlit dashboard:
+```bash
+streamlit run streamlit_app.py
+```
+Or directly:
 ```bash
 python app.py
 ```
-- A browser window will open with the Gradio UI.
-- Upload a CSV file and enter a query to start analyzing your data.
-- The application supports public sharing via a temporary URL (enabled with `share=True`).
+
+### 🌐 Deploying to Streamlit Community Cloud (Free)
+1. Fork or push this repository to your GitHub account (`https://github.com/Abhaygaur23/Multi-Agent-Data-Analytics`).
+2. Go to [share.streamlit.io](https://share.streamlit.io) and log in with your GitHub account.
+3. Click **"New app"** and select:
+   - **Repository:** `Abhaygaur23/Multi-Agent-Data-Analytics`
+   - **Branch:** `main`
+   - **Main file path:** `streamlit_app.py`
+4. Expand **Advanced settings...**:
+   - In **Secrets**, add your Hugging Face token (optional):
+     ```toml
+     HF_TOKEN = "hf_your_token_here"
+     ```
+5. Click **Deploy!** Your app will be live with a shareable public URL in minutes.
+
+### 📦 Running the Legacy Gradio Interface
+If you still wish to launch the Gradio interface:
+```bash
+python app.py --gradio
+```
 
 ### Example Queries
 Below are example queries you can enter in the Gradio textbox after uploading a dataset:

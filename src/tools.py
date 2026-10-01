@@ -1,3 +1,4 @@
+import json
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -5,10 +6,15 @@ from scipy import stats
 from datetime import datetime
 
 # Tool 1: Load and Clean Dataset
-def load_and_clean_data(file_path: str) -> dict:
+def load_and_clean_data(file_path) -> dict:
     try:
-        print(f"Attempting to load data from {file_path}")
-        df = pd.read_csv(file_path)
+        source_name = getattr(file_path, "name", str(file_path))
+        if isinstance(file_path, pd.DataFrame):
+            df = file_path.copy()
+            source_name = "DataFrame"
+        else:
+            df = pd.read_csv(file_path)
+            
         initial_rows = df.shape[0]
 
         # Cleaning
@@ -17,23 +23,27 @@ def load_and_clean_data(file_path: str) -> dict:
         # Impute missing values for numeric columns with median
         numeric_cols = df.select_dtypes(include=['float64', 'int64']).columns
         for col in numeric_cols:
-            df[col] = df[col].fillna(df[col].median())
+            if df[col].isnull().any():
+                df[col] = df[col].fillna(df[col].median())
         # Convert object columns to categorical if unique values < 50%
         for col in df.select_dtypes(include=['object']).columns:
-            if df[col].nunique() / len(df) < 0.5:
+            if len(df) > 0 and (df[col].nunique() / len(df) < 0.5):
                 df[col] = df[col].astype('category')
-        # Remove outliers using IQR method
+        # Remove outliers using IQR method safely
         for col in numeric_cols:
             Q1 = df[col].quantile(0.25)
             Q3 = df[col].quantile(0.75)
             IQR = Q3 - Q1
-            df = df[~((df[col] < (Q1 - 1.5 * IQR)) | (df[col] > (Q3 + 1.5 * IQR)))]
+            if IQR > 0:
+                filtered_df = df[~((df[col] < (Q1 - 1.5 * IQR)) | (df[col] > (Q3 + 1.5 * IQR)))]
+                if not filtered_df.empty:
+                    df = filtered_df
 
         cleaned_rows = df.shape[0]
         return {
             "data": df,
             "status": "success",
-            "message": f"Loaded and cleaned dataset from {file_path}. Rows: {initial_rows} -> {cleaned_rows}. Removed duplicates, imputed missing values, and handled outliers."
+            "message": f"Loaded and cleaned dataset from {source_name}. Rows: {initial_rows} -> {cleaned_rows}. Removed duplicates, imputed missing values, and handled outliers."
         }
     except Exception as e:
         return {"data": None, "status": "error", "message": f"Failed to load/clean data: {str(e)}"}
